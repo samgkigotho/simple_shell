@@ -1,32 +1,38 @@
 #include "shell.h"
-
 /**
  * main - main entry point
- *
+ * @argc: argument count
+ * @argv: argument vector
  * Return: Always 0
  */
-
-int main(void)
+int main(int argc, char **argv)
 {
-	char *buffer = NULL;
+	char *cmd = NULL;
 	size_t len = 0;
 	char *stkn;
 	pid_t my_pid;
-	int status;
-	ssize_t read = 0;
+	int status, i;
+	ssize_t nread = 0;
 
 	while (1)
 	{
 		printf("#cisfun$ ");
-		read = getline(&buffer, &len, stdin); /*Get input from user*/
-		if (read == EOF)
+		nread = getline(&cmd, &len, stdin);
+		if (nread == EOF)
 		{
 			printf("\n");
-			return (read);
+			return (nread);
 		}
-		stkn = strtok(buffer, "\n");
-		char *arr[] = {stkn, NULL};
-
+		stkn = strtok(cmd, " \n");
+		argv = malloc(sizeof(char *) * 32);
+		argv[0] = stkn;
+		argc = 1;
+		while (stkn != NULL)
+		{
+			stkn = strtok(NULL, " \n");
+			argv[argc] = stkn;
+			i++;
+		}
 		my_pid = fork();
 		if (my_pid == -1)
 		{
@@ -35,17 +41,15 @@ int main(void)
 		}
 		else if (my_pid == 0)
 		{
-			if (execve(arr[0], arr, NULL) == -1)
+			if (execve(argv[0], argv, NULL) == -1)
 			{
-				perror(arr[0]);
+				perror(argv[0]);
 				return (1);
 			}
-			execve(arr[0], arr, NULL);
+			execve(argv[0], argv, NULL);
 		}
-		else
-			wait(&status);
-
+		wait(&status);
 	}
-	free(buffer);
+	free(cmd);
 	return (0);
 }

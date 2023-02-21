@@ -8,6 +8,6 @@
 #include <sys/wait.h>
 #include <string.h>
 
-int main(void);
+int main(int argc, char **argv);
 
 #endif /* SHELL_H */
