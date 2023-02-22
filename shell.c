@@ -42,7 +42,7 @@ int main(int argc, char **argv)
 		else if (my_pid == 0)
 		{
 		if (execve(argv[0], argv, NULL) == -1)
-		{
+		}
 	perror(argv[0]);
 	return (1);
 	}
