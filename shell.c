@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	size_t len = 0;
 	char *stkn;
 	pid_t my_pid;
-	int status, i;
+	int status;
 	ssize_t nread = 0;
 
 	while (1)
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 		{
 			stkn = strtok(NULL, " \n");
 			argv[argc] = stkn;
-			i++;
+			argc++;
 		}
 		my_pid = fork();
 		if (my_pid == -1)
