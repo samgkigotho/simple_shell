@@ -39,15 +39,16 @@ int main(int argc, char **argv)
 			perror("Error:");
 			return (1);
 		}
-		else if (my_pid == 0)
+		if (my_pid == 0)
 		{
-		if (execve(argv[0], argv, NULL) == -1)
+			if (execve(argv[0], argv, NULL) == -1)
+			{
+				perror(argv[0]);
+				return (1);
+			}
+			execve(argv[0], argv, NULL);
 		}
-	perror(argv[0]);
-	return (1);
-	}
-	execve(argv[0], argv, NULL);
-	} wait(&status);
+		wait(&status);
 	}
 	free(cmd);
 	return (0);
